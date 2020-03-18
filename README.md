@@ -2,7 +2,7 @@
 
 > I made this project as fast as I knew there was an API around there.
 
-<img width="500" src="https://git.epam.com/Alejandro_Gudino/covid-19/raw/master/covid19.jpg" />
+<img width="500" src="https://github.com/agudocasillas/covid-19/blob/master/covid19.jpg" />
 
 ## Usage
 
