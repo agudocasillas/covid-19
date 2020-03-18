@@ -1,6 +1,8 @@
-# # COVID-19 API
+# COVID-19 API
 
 > I made this project as fast as I knew there was an API around there.
+
+<img width="500" src="https://git.epam.com/Alejandro_Gudino/covid-19/raw/master/covid19.jpg" />
 
 ## Usage
 
