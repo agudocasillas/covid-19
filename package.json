@@ -1,21 +1,23 @@
 {
-  "name": "coronavirus",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "next"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@material-ui/core": "^4.9.5",
-    "material-table": "^1.57.2",
-    "next": "^9.3.0",
-    "react": "^16.13.0",
-    "react-country-flag": "^2.0.1",
-    "react-dom": "^16.13.0",
-    "react-normalize": "^0.4.4",
-    "styled-components": "^5.0.1"
-  }
+	"name": "coronavirus",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "next start",
+		"dev": "next",
+		"build": "next build"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@material-ui/core": "^4.9.5",
+		"material-table": "^1.57.2",
+		"next": "^9.3.0",
+		"react": "^16.13.0",
+		"react-country-flag": "^2.0.1",
+		"react-dom": "^16.13.0",
+		"react-normalize": "^0.4.4",
+		"styled-components": "^5.0.1"
+	}
 }

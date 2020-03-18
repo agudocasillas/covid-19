@@ -1,7 +1,9 @@
 # # COVID-19 API
+
 > I made this project as fast as I knew there was an API around there.
 
 ## Usage
+
 1. Clone
 
 2. cd covid-19
