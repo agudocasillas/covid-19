@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import MaterialTable from "material-table";
+import MaterialTable, { MTableBody } from "material-table";
 import { resetServerContext } from "react-beautiful-dnd";
 import { renderToString } from "react-dom/server";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -7,7 +7,6 @@ import ReactCountryFlag from "react-country-flag";
 import { getCountries, getSpecificCountry } from "./CountryAPI";
 
 resetServerContext();
-renderToString();
 
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -59,6 +58,12 @@ export default function CountryTable() {
 			field: "recovered",
 			render: rowData =>
 				rowData.recovered.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		},
+		{
+			title: "Still Sick",
+			field: "stillSick",
+			render: rowData =>
+				rowData.stillSick.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 		}
 	];
 	const [countries, setCountries] = useState([]);
@@ -82,7 +87,8 @@ export default function CountryTable() {
 					return {
 						deaths: { value: 0 },
 						confirmed: { value: 0 },
-						recovered: { value: 0 }
+						recovered: { value: 0 },
+						stillSick: { value: 0 }
 					};
 				});
 
@@ -90,7 +96,11 @@ export default function CountryTable() {
 					...country,
 					deaths: deaths ? deaths.value : 0,
 					confirmed: confirmed ? confirmed.value : 0,
-					recovered: recovered ? recovered.value : 0
+					recovered: recovered ? recovered.value : 0,
+					stillSick:
+						(confirmed ? confirmed.value : 0) -
+						(recovered ? recovered.value : 0) -
+						(deaths ? deaths.value : 0)
 				};
 			});
 
@@ -104,11 +114,18 @@ export default function CountryTable() {
 	return (
 		<div className={classes.root}>
 			<MaterialTable
+				components={{
+					Body: props => <MTableBody {...props} />
+				}}
 				title="COVID-19 in the World"
 				options={{
 					pageSizeOptions: [100, 200, 254],
 					pageSize: numRows,
-					paging: false
+					paging: false,
+					exportButton: true,
+					fixedColumns: {
+						left: 1
+					}
 				}}
 				columns={columns}
 				data={countries}
