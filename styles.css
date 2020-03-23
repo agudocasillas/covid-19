@@ -1,0 +1,33 @@
+body {
+  background-color: #fcfcfc;
+}
+
+@media only screen and (max-width: 767px) {
+  .MuiTableRow-root .MuiTableCell-root {
+    padding: 5px;
+    overflow: hidden;
+  }
+
+  thead.MuiTableHead-root,
+  tbody.MuiTableBody-root,
+  .MuiPaper-root .MuiToolbar-root {
+    display: block;
+  }
+
+  tbody.MuiTableBody-root {
+    overflow: scroll;
+    height: 80vh;
+  }
+
+  .MTableToolbar-title-39 {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .MTableToolbar-actions-38,
+  .MTableToolbar-searchField-40 {
+    display: inline-block;
+  }
+}

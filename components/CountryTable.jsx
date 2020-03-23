@@ -117,15 +117,13 @@ export default function CountryTable() {
 				components={{
 					Body: props => <MTableBody {...props} />
 				}}
+				isLoading={countries.length === 0}
 				title="COVID-19 in the World"
 				options={{
 					pageSizeOptions: [100, 200, 254],
 					pageSize: numRows,
 					paging: false,
-					exportButton: true,
-					fixedColumns: {
-						left: 1
-					}
+					exportButton: true
 				}}
 				columns={columns}
 				data={countries}
@@ -134,6 +132,7 @@ export default function CountryTable() {
 				Author Alex Gudino <br /> Data taken from{" "}
 				<a href="https://covid19.mathdro.id/api">covid19.mathdro.id/api</a>
 			</div>
+			<style jsx>{``}</style>
 		</div>
 	);
 }
