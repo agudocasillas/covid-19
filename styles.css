@@ -16,7 +16,7 @@ body {
 
   tbody.MuiTableBody-root {
     overflow: scroll;
-    height: 80vh;
+    max-height: 80vh;
   }
 
   .MTableToolbar-title-39 {

@@ -73,9 +73,9 @@ export default function CountryTable() {
 		getCountries().then(res => {
 			const countriesArr = Object.entries(res.countries).reduce((acc, curr) => {
 				const country = {
-					country: curr[0],
-					short: curr[1],
-					iso3: res.iso3[curr[1]]
+					country: curr[1].name,
+					short: curr[1].iso2,
+					iso3: curr[1].iso3 || ""
 				};
 				return [...acc, country];
 			}, []);
