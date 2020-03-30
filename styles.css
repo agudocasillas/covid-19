@@ -10,6 +10,11 @@ body {
     width: 25% !important;
   }
 
+  .MuiTypography-h6 {
+    text-align: center;
+    margin-bottom: 15px !important;
+  }
+
   thead.MuiTableHead-root,
   tbody.MuiTableBody-root,
   .MuiPaper-root .MuiToolbar-root {
@@ -31,11 +36,17 @@ body {
   .MTableToolbar-searchField-40 {
     display: inline-block;
   }
+
+  .MTableToolbar-searchField-40 {
+    max-width: 220px;
+    padding-left: 0 !important;
+  }
 }
 
 .modal-button {
   border: 0;
   text-decoration: underline;
   font-size: 15px;
+  background: #ffffff;
   font-family: "Roboto", "Helvetica", "Arial";
 }

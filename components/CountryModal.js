@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 	paper: {
 		position: 'absolute',
 		width: '70%',
+		maxWidth: '350px',
 		backgroundColor: theme.palette.background.paper,
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],
@@ -29,8 +30,30 @@ const useStyles = makeStyles(theme => ({
 	simpleModalTitle: {
 		'font-family': 'Arial, Helvetica, sans-serif'
 	},
-	numbers: {
-		marginLeft: 15
+	daysWrapper: {
+		borderBottom: '1px solid #000000',
+		marginBottom: 15
+	},
+	red: {
+		background: 'red',
+		padding: '5px',
+		color: '#ffffff',
+		textAlign: 'center',
+		'font-family': 'Arial, Helvetica, sans-serif'
+	},
+	green: {
+		background: 'green',
+		padding: '5px',
+		color: '#ffffff',
+		textAlign: 'center',
+		'font-family': 'Arial, Helvetica, sans-serif'
+	},
+	close: {
+		'font-size': '20px',
+		padding: '5px',
+		position: 'absolute',
+		top: '6px',
+		right: '15px'
 	}
 }));
 
@@ -63,23 +86,37 @@ const CountryModal = ({ country, days }) => {
 
 	const body = (
 		<div style={modalStyle} className={classes.paper}>
+			<span className={classes.close} onClick={handleClose}>
+				&times;
+			</span>
 			<h2 className={classes.simpleModalTitle}>Las three days in {country}</h2>
 			{countriesSorted.map(([day, data], idx) => {
 				return (
-					<p key={idx} className={classes.simpleModalDescription}>
-						{day}:
-						<span className={classes.numbers}>
-							<strong>Confirmed:</strong>
-							{data.confirmed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-						</span>
-						<span className={classes.numbers}>
-							<strong>Deaths:</strong>{' '}
-							{data.deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-						</span>
-					</p>
+					<div className={classes.daysWrapper} key={idx}>
+						<p className={classes.simpleModalDescription}>{day}:</p>
+						<p className={classes.simpleModalDescription}>
+							<span className={classes.numbers}>
+								<strong>Confirmed:</strong>
+								{data.confirmed
+									.toString()
+									.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+							</span>
+						</p>
+						<p className={classes.simpleModalDescription}>
+							<span className={classes.numbers}>
+								<strong>Deaths:</strong>{' '}
+								{data.deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+							</span>
+						</p>
+					</div>
 				);
 			})}
-			<p className={classes.simpleModalDescription}>
+			<p
+				className={
+					(classes.simpleModalDescription,
+					calcPercentage() > 0 ? classes.red : classes.green)
+				}
+			>
 				{calcPercentage() === 0
 					? 'No increments'
 					: calcPercentage() > 0
