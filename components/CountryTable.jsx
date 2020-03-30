@@ -1,10 +1,14 @@
-import React, { useState, useEffect, Fragment } from "react";
-import MaterialTable, { MTableBody } from "material-table";
-import { resetServerContext } from "react-beautiful-dnd";
-import { renderToString } from "react-dom/server";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import ReactCountryFlag from "react-country-flag";
-import { getCountries, getSpecificCountry } from "./CountryAPI";
+import React, { useState, useEffect, Fragment } from 'react';
+import MaterialTable, { MTableBody } from 'material-table';
+import { resetServerContext } from 'react-beautiful-dnd';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+import ReactCountryFlag from 'react-country-flag';
+import {
+	getCountries,
+	getSpecificCountry,
+	getDay
+} from '../services/CountryAPI';
+import CountryModal from './CountryModal';
 
 resetServerContext();
 
@@ -12,14 +16,14 @@ const useStyles = makeStyles(() =>
 	createStyles({
 		root: {
 			maxWidth: 1000,
-			margin: "0 auto"
+			margin: '0 auto'
 		},
 		author: {
-			width: "100%",
-			textAlign: "center",
+			width: '100%',
+			textAlign: 'center',
 			fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-			fontSize: "13px",
-			padding: "20px 0"
+			fontSize: '13px',
+			padding: '20px 0'
 		}
 	})
 );
@@ -28,54 +32,95 @@ export default function CountryTable() {
 	const classes = useStyles();
 	const columns = [
 		{
-			title: "Country",
-			field: "country",
+			title: 'Country',
+			field: 'country',
 			render: rowData =>
 				rowData.short ? (
 					<Fragment>
 						<ReactCountryFlag countryCode={rowData.short} />
-						{rowData.country}
+						{days[rowData.country] ? (
+							<CountryModal
+								country={rowData.country}
+								days={days[rowData.country]}
+								test={days}
+							/>
+						) : (
+							''
+						)}
 					</Fragment>
 				) : (
-					`${rowData.country} ${rowData.short}`
+					`${rowData.country}`
 				)
 		},
 		{
-			title: "Confirmed",
-			defaultSort: "desc",
-			field: "confirmed",
+			title: 'Confirmed',
+			defaultSort: 'desc',
+			field: 'confirmed',
 			render: rowData =>
-				rowData.confirmed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+				rowData.confirmed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 		},
 		{
-			title: "Deaths",
-			field: "deaths",
+			title: 'Deaths',
+			field: 'deaths',
 			render: rowData =>
-				rowData.deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+				rowData.deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 		},
 		{
-			title: "Recovered",
-			field: "recovered",
+			title: 'Recovered',
+			field: 'recovered',
 			render: rowData =>
-				rowData.recovered.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+				rowData.recovered.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 		},
 		{
-			title: "Still Sick",
-			field: "stillSick",
+			title: 'Still Sick',
+			field: 'stillSick',
 			render: rowData =>
-				rowData.stillSick.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+				rowData.stillSick.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 		}
 	];
 	const [countries, setCountries] = useState([]);
 	const [numRows, setNumRows] = useState(254);
+	const [days, setDays] = useState({});
 
 	useEffect(() => {
+		const promiseDays = [1, 2, 3].map(getDay);
+
+		Promise.all(promiseDays).then(res => {
+			const final = res.flat().reduce((acc, curr) => {
+				if (!curr.countryRegion) {
+					return acc;
+				}
+
+				return {
+					...acc,
+					[curr.countryRegion]: {
+						...(acc[curr.countryRegion] || {}),
+						[curr.lastUpdate.split(' ')[0]]: {
+							confirmed: acc[curr.countryRegion]
+								? acc[curr.countryRegion][curr.lastUpdate.split(' ')[0]]
+									? acc[curr.countryRegion][curr.lastUpdate.split(' ')[0]]
+											.confirmed + parseInt(curr.confirmed)
+									: parseInt(curr.confirmed)
+								: parseInt(curr.confirmed),
+							deaths: acc[curr.countryRegion]
+								? acc[curr.countryRegion][curr.lastUpdate.split(' ')[0]]
+									? acc[curr.countryRegion][curr.lastUpdate.split(' ')[0]]
+											.deaths + parseInt(curr.deaths)
+									: parseInt(curr.deaths)
+								: parseInt(curr.deaths)
+						}
+					}
+				};
+			}, {});
+			setDays(final);
+		});
+
 		getCountries().then(res => {
 			const countriesArr = Object.entries(res.countries).reduce((acc, curr) => {
 				const country = {
 					country: curr[1].name,
 					short: curr[1].iso2,
-					iso3: curr[1].iso3 || ""
+					iso3: curr[1].iso3 || ''
 				};
 				return [...acc, country];
 			}, []);
@@ -129,7 +174,7 @@ export default function CountryTable() {
 				data={countries}
 			/>
 			<div className={classes.author}>
-				Author Alex Gudino <br /> Data taken from{" "}
+				Author Alex Gudino <br /> Data taken from{' '}
 				<a href="https://covid19.mathdro.id/api">covid19.mathdro.id/api</a>
 			</div>
 			<style jsx>{``}</style>

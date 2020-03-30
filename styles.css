@@ -1,11 +1,13 @@
 body {
   background-color: #fcfcfc;
+  box-sizing: border-box;
 }
 
 @media only screen and (max-width: 767px) {
   .MuiTableRow-root .MuiTableCell-root {
     padding: 5px;
     overflow: hidden;
+    width: 25% !important;
   }
 
   thead.MuiTableHead-root,
@@ -22,12 +24,18 @@ body {
   .MTableToolbar-title-39 {
     display: block;
     width: 100%;
-    text-align: center;
-    padding: 15px 0;
+    text-align: left;
   }
 
   .MTableToolbar-actions-38,
   .MTableToolbar-searchField-40 {
     display: inline-block;
   }
+}
+
+.modal-button {
+  border: 0;
+  text-decoration: underline;
+  font-size: 15px;
+  font-family: "Roboto", "Helvetica", "Arial";
 }
