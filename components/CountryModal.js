@@ -79,9 +79,10 @@ const CountryModal = ({ country, days }) => {
 	const calcPercentage = () => {
 		const lastDay = countriesSorted[0];
 		const prevDay = countriesSorted[1] || lastDay;
-		const calc =
-			Math.floor((lastDay[1].confirmed * 100) / prevDay[1].confirmed) - 100;
-		return calc;
+
+		const calc = (lastDay[1].confirmed * 100) / prevDay[1].confirmed - 100;
+
+		return calc.toFixed(2);
 	};
 
 	const body = (
